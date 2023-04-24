@@ -35,24 +35,24 @@ for id in ids:
                 nvURL = "https://git.kernel.org/" + result
                 vURL = "https://git.kernel.org/" + results[index+1].get('href')
 
-                nvURL = nvURL.replace("tree", "plain")
-                vURL = vURL.replace("tree", "plain")
+                if "tree" in nvURL and "tree" in vURL:
 
-                page = requests.get(nvURL)
-                soup = BeautifulSoup(page.content, "html.parser")
-                nvString = soup.getText()
-                nv = (rootID, id, nvString, 0)
-                c.execute("INSERT INTO codes VALUES (?, ?, ?, ?)", nv)
+                    nvURL = nvURL.replace("tree", "plain")
+                    vURL = vURL.replace("tree", "plain")
 
-                page = requests.get(vURL)
-                soup = BeautifulSoup(page.content, "html.parser")
-                vString = soup.getText()
-                v = (rootID, vURL.split("?id=")[1], vString, 1)
-                c.execute("INSERT INTO codes VALUES (?, ?, ?, ?)", v)
-                conn.commit()
+                    page = requests.get(nvURL)
+                    soup = BeautifulSoup(page.content, "html.parser")
+                    nvString = soup.getText()
+                    nv = (rootID, id, nvString, 0)
+                    c.execute("INSERT INTO codes VALUES (?, ?, ?, ?)", nv)
 
-                
-                break
+                    page = requests.get(vURL)
+                    soup = BeautifulSoup(page.content, "html.parser")
+                    vString = soup.getText()
+                    v = (rootID, vURL.split("?id=")[1], vString, 1)
+                    c.execute("INSERT INTO codes VALUES (?, ?, ?, ?)", v)
+                    conn.commit()
+
     except:
         print("Failed to execute!")
         traceback.print_exc()
