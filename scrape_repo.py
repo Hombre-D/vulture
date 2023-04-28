@@ -10,9 +10,10 @@ conn = sqlite3.connect('vulture.db')
 c = conn.cursor()
 
 ids = c.execute("select fixed, id from scrapers").fetchall()
-vulnerable = []
-nonVulnerable = []
+# vulnerable = []
+# nonVulnerable = []
 count = 0
+codeIndex = 0
 
 for id in ids:
     rootID = id[1]
@@ -32,10 +33,12 @@ for id in ids:
             index = results.index(result)
             result = result.get('href')
             if id in result:
+                
                 nvURL = "https://git.kernel.org/" + result
-                vURL = "https://git.kernel.org/" + results[index+1].get('href')
+                vURL = "https://git.kernel.org/" + results[index+1].get('href')   
 
                 if "tree" in nvURL and "tree" in vURL:
+                    codeIndex += 1
 
                     nvURL = nvURL.replace("tree", "plain")
                     vURL = vURL.replace("tree", "plain")
@@ -43,16 +46,15 @@ for id in ids:
                     page = requests.get(nvURL)
                     soup = BeautifulSoup(page.content, "html.parser")
                     nvString = soup.getText()
-                    nv = (rootID, id, nvString, 0)
-                    c.execute("INSERT INTO codes VALUES (?, ?, ?, ?)", nv)
+                    nv = (codeIndex, rootID, id, nvString, nvURL, 0)
+                    c.execute("INSERT INTO codes VALUES (?, ?, ?, ?, ?, ?)", nv)
 
                     page = requests.get(vURL)
                     soup = BeautifulSoup(page.content, "html.parser")
                     vString = soup.getText()
-                    v = (rootID, vURL.split("?id=")[1], vString, 1)
-                    c.execute("INSERT INTO codes VALUES (?, ?, ?, ?)", v)
+                    v = (codeIndex, rootID, vURL.split("?id=")[1], vString, vURL, 1)
+                    c.execute("INSERT INTO codes VALUES (?, ?, ?, ?, ?, ?)", v)
                     conn.commit()
-
     except:
         print("Failed to execute!")
         traceback.print_exc()
