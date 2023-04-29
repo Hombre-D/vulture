@@ -11,6 +11,8 @@ pandas = "*"
 tensorflow = "*"
 tensorflow-text = "*"
 nltk = "*"
+scikit-learn = "*"
+keras = "*"
 
 [dev-packages]
 

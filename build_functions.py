@@ -62,13 +62,7 @@ for i in range(1, 19387):
             print("Failed")
     count += 1
     print(count)
-    
 
-
-
-
-    # count += 1
-    # print(count)
 
 conn.close()
 
