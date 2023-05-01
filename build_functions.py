@@ -36,7 +36,7 @@ count = 0
 
 for i in range(1, 19387):
     id_list = c.execute("select codeIndex, rootID, id, code, url, isVulnerable from clean_codes where codeIndex = ?", [i]).fetchall()
-    func_list = c.execute("select func_name from func_names where id in (?, ?)", [id_list[0][2], id_list[1][2]]).fetchall()
+    func_list = c.execute("select distinct func_name from func_names where id = ?", [id_list[0][2]]).fetchall()
     
     for func in func_list:
         code_a = id_list[0]

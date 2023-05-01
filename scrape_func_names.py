@@ -6,6 +6,7 @@ conn = sqlite3.connect('vulture.db')
 c = conn.cursor()
 
 ids = c.execute("select id, fixed from scrapers").fetchall()
+
 count = 0
 for id in ids:
 
@@ -25,9 +26,9 @@ for id in ids:
         results = soup.find_all("div", {"class":"hunk"})
 
         for result in results:
-            input = (rootId, id, result.getText().split("@@ ")[2])
-
-            c.execute("INSERT INTO func_names VALUES (?, ?, ?)", input)
+            input = (id, result.getText().split("@@ ")[2])
+            print(input)
+            c.execute("INSERT INTO func_names VALUES (?, ?)", input)
             conn.commit()
     
     except:
