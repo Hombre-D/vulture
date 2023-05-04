@@ -13,6 +13,8 @@ tensorflow-text = "*"
 nltk = "*"
 scikit-learn = "*"
 keras = "*"
+seaborn = "*"
+matplotlib = "*"
 
 [dev-packages]
 
