@@ -1,5 +1,8 @@
 import sqlite3
 
+# These two amazing functions were rebuilt from what I found at:
+# https://stackoverflow.com/questions/55078713/extract-function-code-from-c-sourcecode-file-with-python
+# Thanks, Stack Overflow user 'user8092240'!
 def get_line_number(code, func_name):
     lines = code.splitlines()
     for line in lines:
