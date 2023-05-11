@@ -10,8 +10,6 @@ conn = sqlite3.connect('vulture.db')
 c = conn.cursor()
 
 ids = c.execute("select fixed, id from scrapers").fetchall()
-# vulnerable = []
-# nonVulnerable = []
 count = 0
 codeIndex = 0
 
@@ -23,6 +21,8 @@ for id in ids:
     page = requests.get(URL)
     soup = BeautifulSoup(page.content, "html.parser")
     results = soup.find_all('a')
+
+    # We want to read the results backwards, as the correction file / vulnerable file to scrape are in that order.
     results.reverse()
     
     count += 1
@@ -35,7 +35,7 @@ for id in ids:
             if id in result:
                 
                 nvURL = "https://git.kernel.org/" + result
-                vURL = "https://git.kernel.org/" + results[index+1].get('href')   
+                vURL = "https://git.kernel.org/" + results[index+1].get('href')
 
                 if "tree" in nvURL and "tree" in vURL:
                     codeIndex += 1

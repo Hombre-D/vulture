@@ -34,6 +34,7 @@ conn = sqlite3.connect('vulture.db')
 c = conn.cursor()
 count = 0
 
+# Got 19387 pairs from our scrape, hence the range.
 for i in range(1, 19387):
     id_list = c.execute("select codeIndex, rootID, id, code, url, isVulnerable from clean_codes where codeIndex = ?", [i]).fetchall()
     func_list = c.execute("select distinct func_name from func_names where id = ?", [id_list[0][2]]).fetchall()
